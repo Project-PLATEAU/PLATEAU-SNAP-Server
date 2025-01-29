@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.301" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.411" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PLATEAU.Snap.Server.Repositories\PLATEAU.Snap.Server.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>

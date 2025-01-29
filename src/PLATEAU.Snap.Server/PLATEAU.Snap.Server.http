@@ -1,0 +1,39 @@
+@PLATEAU.Snap.Server_HostAddress = https://localhost:7135
+
+POST {{PLATEAU.Snap.Server_HostAddress}}/api/building-image
+Accept: application/json
+
+{
+  "gmlid": "ID_a8d57b53-6cc9-4a68-9101-06665a66e69d",
+  "from": {
+    "longitude": 139.77016107644232,
+    "latitude": 35.649218689225954,
+    "altitude": 5
+  },
+  "to": {
+    "longitude": 139.770265539184,
+    "latitude": 35.64927830412524,
+    "altitude": 5
+  },
+  "timestamp": "2025-01-18T21:27:32.2667573+09:00"
+}
+
+###
+
+POST {{PLATEAU.Snap.Server_HostAddress}}/api/visible-surfaces
+Content-Type: application/json
+
+{
+  "from": {
+    "longitude": 139.77016107644232,
+    "latitude": 35.649218689225954,
+    "altitude": 5
+  },
+  "to": {
+    "longitude": 139.770265539184,
+    "latitude": 35.64927830412524,
+    "altitude": 5
+  },
+  "max_distance": 30,
+  "field_of_view": 45
+}
