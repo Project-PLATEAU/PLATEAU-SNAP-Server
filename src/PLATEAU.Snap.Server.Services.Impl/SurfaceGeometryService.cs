@@ -1,5 +1,6 @@
 ﻿using PLATEAU.Snap.Models.Extensions.Numerics;
 using PLATEAU.Snap.Models.Server;
+using PLATEAU.Snap.Server.Geoid;
 using PLATEAU.Snap.Server.Repositories;
 
 namespace PLATEAU.Snap.Server.Services;
@@ -10,10 +11,13 @@ internal class SurfaceGeometryService : ISurfaceGeometryService
 
     private readonly ICityBoundaryRepository cityBoundaryRepository;
 
-    public SurfaceGeometryService(ISurfaceGeometryRepository repository, ICityBoundaryRepository cityBoundaryRepository)
+    private readonly Grid grid;
+
+    public SurfaceGeometryService(ISurfaceGeometryRepository repository, ICityBoundaryRepository cityBoundaryRepository, Grid grid)
     {
         this.repository = repository;
         this.cityBoundaryRepository = cityBoundaryRepository;
+        this.grid = grid;
     }
 
     public async Task<Models.Client.VisibleSurfacesResponse> GetVisibleSurfacesAsync(VisibleSurfacesRequest request)
@@ -38,8 +42,11 @@ internal class SurfaceGeometryService : ISurfaceGeometryService
             return new Models.Client.VisibleSurfacesResponse();
         }
 
+        // 撮影地点のジオイド高を取得
+        var geoidHeight = this.grid.GetGeoidHeight(request.From.X, request.From.Y);
+
         var response = new Models.Client.VisibleSurfacesResponse();
-        response.Surfaces.AddRange(facingPolygons.Select(p => new Models.Client.Surface(p.Gmlid, p.Polygon)));
+        response.Surfaces.AddRange(facingPolygons.Select(p => new Models.Client.Surface(p.Gmlid, p.Polygon, geoidHeight)));
 
         return response;
     }

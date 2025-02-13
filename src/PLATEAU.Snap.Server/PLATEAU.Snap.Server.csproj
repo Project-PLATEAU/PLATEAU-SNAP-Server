@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.400.86" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" />
@@ -18,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PLATEAU.Snap.Models\PLATEAU.Snap.Models.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Entities\PLATEAU.Snap.Server.Entities.csproj" />
+    <ProjectReference Include="..\PLATEAU.Snap.Server.Geoid\PLATEAU.Snap.Server.Geoid.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Repositories.PostgreSQL\PLATEAU.Snap.Server.Repositories.PostgreSQL.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Repositories.S3\PLATEAU.Snap.Server.Repositories.S3.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Repositories\PLATEAU.Snap.Server.Repositories.csproj" />

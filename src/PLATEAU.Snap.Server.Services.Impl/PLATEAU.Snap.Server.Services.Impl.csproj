@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PLATEAU.Snap.Server.Geoid\PLATEAU.Snap.Server.Geoid.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Repositories\PLATEAU.Snap.Server.Repositories.csproj" />
     <ProjectReference Include="..\PLATEAU.Snap.Server.Services\PLATEAU.Snap.Server.Services.csproj" />
   </ItemGroup>

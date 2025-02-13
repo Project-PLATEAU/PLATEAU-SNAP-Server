@@ -19,19 +19,56 @@ Accept: application/json
 }
 
 ###
-
 POST {{PLATEAU.Snap.Server_HostAddress}}/api/visible-surfaces
 Content-Type: application/json
 
 {
   "from": {
-    "longitude": 139.77016107644232,
-    "latitude": 35.649218689225954,
+    "longitude": 139.77912103191173,
+    "latitude": 35.68437185412356,
     "altitude": 5
   },
   "to": {
-    "longitude": 139.770265539184,
-    "latitude": 35.64927830412524,
+    "longitude": 139.77926318898915,
+    "latitude": 35.6845243562967,
+    "altitude": 5
+  },
+  "max_distance": 30,
+  "field_of_view": 45
+}
+
+###
+POST {{PLATEAU.Snap.Server_HostAddress}}/api/visible-surfaces
+Content-Type: application/json
+
+{
+  "from": {
+    "longitude": 139.77922294929098,
+    "latitude": 35.68430820994336,
+    "altitude": 5
+  },
+  "to": {
+    "longitude": 139.77945054227237,
+    "latitude": 35.684403721337794,
+    "altitude": 5
+  },
+  "max_distance": 30,
+  "field_of_view": 45
+}
+
+###
+POST {{PLATEAU.Snap.Server_HostAddress}}/api/visible-surfaces
+Content-Type: application/json
+
+{
+  "from": {
+    "longitude": 139.77894604449696,
+    "latitude": 35.68449692186244,
+    "altitude": 5
+  },
+  "to": {
+    "longitude": 139.7790882901103,
+    "latitude": 35.68466560683268,
     "altitude": 5
   },
   "max_distance": 30,

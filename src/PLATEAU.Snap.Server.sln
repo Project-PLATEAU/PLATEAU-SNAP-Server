@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PLATEAU.Snap.Server.Reposit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLATEAU.Snap.Server.Repositories.S3", "PLATEAU.Snap.Server.Repositories.S3\PLATEAU.Snap.Server.Repositories.S3.csproj", "{8E83ED44-422B-4918-9E1C-C81865D91A6F}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3EE5ED1D-9683-454A-8293-03CCE3D3FA33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PLATEAU.Snap.Server.Geoid", "PLATEAU.Snap.Server.Geoid\PLATEAU.Snap.Server.Geoid.csproj", "{C96454A2-045A-4C79-B5E9-457877AC92F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,10 @@ Global
 		{8E83ED44-422B-4918-9E1C-C81865D91A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E83ED44-422B-4918-9E1C-C81865D91A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E83ED44-422B-4918-9E1C-C81865D91A6F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EE5ED1D-9683-454A-8293-03CCE3D3FA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EE5ED1D-9683-454A-8293-03CCE3D3FA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EE5ED1D-9683-454A-8293-03CCE3D3FA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EE5ED1D-9683-454A-8293-03CCE3D3FA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C96454A2-045A-4C79-B5E9-457877AC92F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C96454A2-045A-4C79-B5E9-457877AC92F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C96454A2-045A-4C79-B5E9-457877AC92F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C96454A2-045A-4C79-B5E9-457877AC92F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

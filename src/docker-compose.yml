@@ -1,26 +1,11 @@
 services:
   plateau.snap.server:
-    image: ${DOCKER_REGISTRY-}plateausnapserver
-    build:
-      context: .
-      dockerfile: PLATEAU.Snap.Server/Dockerfile
+    image: ${DOCKER_REGISTRY-}plateau-snap-server:latest
     ports:
-    - "8080:8080"
-    - "8081:8081"
-  postgres:
-    image: postgis/postgis:16-3.4
+      - "80:8080"
+      - "443:8081"
+    restart: always
     environment:
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=password"
-    volumes_from:
-      - data
-    ports:
-      - "25432:5432"
-  data:
-    image: "busybox"
-    volumes:
-      - "db:/var/lib/postgresql/data"
-
-volumes:
-  db:
-    driver: local
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - SECRET_NAME=${SECRET_NAME}

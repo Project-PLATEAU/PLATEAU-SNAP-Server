@@ -15,6 +15,7 @@ WORKDIR /src
 COPY ["PLATEAU.Snap.Server/PLATEAU.Snap.Server.csproj", "PLATEAU.Snap.Server/"]
 COPY ["PLATEAU.Snap.Models/PLATEAU.Snap.Models.csproj", "PLATEAU.Snap.Models/"]
 COPY ["PLATEAU.Snap.Server.Entities/PLATEAU.Snap.Server.Entities.csproj", "PLATEAU.Snap.Server.Entities/"]
+COPY ["PLATEAU.Snap.Server.Geoid/PLATEAU.Snap.Server.Geoid.csproj", "PLATEAU.Snap.Server.Geoid/"]
 COPY ["PLATEAU.Snap.Server.Repositories.PostgreSQL/PLATEAU.Snap.Server.Repositories.PostgreSQL.csproj", "PLATEAU.Snap.Server.Repositories.PostgreSQL/"]
 COPY ["PLATEAU.Snap.Server.Repositories/PLATEAU.Snap.Server.Repositories.csproj", "PLATEAU.Snap.Server.Repositories/"]
 COPY ["PLATEAU.Snap.Server.Repositories.S3/PLATEAU.Snap.Server.Repositories.S3.csproj", "PLATEAU.Snap.Server.Repositories.S3/"]

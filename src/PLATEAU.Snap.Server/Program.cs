@@ -1,27 +1,73 @@
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon.SecretsManager;
+using Amazon.SecretsManager.Model;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using PLATEAU.Snap.Server;
 using PLATEAU.Snap.Server.Entities;
+using PLATEAU.Snap.Server.Geoid;
 using PLATEAU.Snap.Server.Repositories;
 using PLATEAU.Snap.Server.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+var isDevelopment = builder.Environment.IsDevelopment();
 
 // Configuration
 var configuration = builder.Configuration;
+if (!isDevelopment)
+{
+    var secretName = Environment.GetEnvironmentVariable("SECRET_NAME");
+    ArgumentNullException.ThrowIfNull(secretName);
+    Console.WriteLine($"Secret Name: {secretName}");
+
+    var response = await new AmazonSecretsManagerClient().GetSecretValueAsync(new GetSecretValueRequest() { SecretId = secretName });
+    Console.WriteLine($"GetSecretValueResponse: {response.HttpStatusCode}");
+    var dic = JsonSerializer.Deserialize<Dictionary<string, string?>>(response.SecretString);
+    configuration.AddInMemoryCollection(dic);
+}
+else
+{
+    var awsOptions = configuration.GetAWSOptions();
+    Console.WriteLine($"Profile: {awsOptions.Profile}, Region: {awsOptions.Region.DisplayName}");
+    builder.Services.AddDefaultAWSOptions(awsOptions);
+}
+
 var databaseSettings = configuration.GetSection("Database").Get<DatabaseSettings>();
 ArgumentNullException.ThrowIfNull(databaseSettings);
 var s3Settings = configuration.GetSection("S3").Get<S3Settings>();
 ArgumentNullException.ThrowIfNull(s3Settings);
 
+// Geoid
+Grid grid;
+if (!isDevelopment)
+{
+    configuration.GetValue<string>("Geoid:Path");
+    using var response = await new AmazonS3Client().GetObjectAsync(new GetObjectRequest { BucketName = s3Settings.Bucket, Key = "gsigeo2011_ver2_2.asc" });
+    using var geoidoReader = new GeoidReader(response.ResponseStream);
+    grid = geoidoReader.Read();
+}
+else
+{
+#pragma warning disable CS8604
+    // Development:  read gsigeo2011_ver2_2 in the same path as the executable.
+    var path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "gsigeo2011_ver2_2.asc");
+#pragma warning restore CS8604
+    using var geoidoReader = new GeoidReader(path);
+    grid = geoidoReader.Read();
+}
+Console.WriteLine($"GridInfo: {grid.GridInfo}");
+
 // Add services to the container.
+builder.Services.AddHealthChecks();
+builder.Services.AddSingleton(grid);
 builder.Services.UseDefaultServices();
 builder.Services.UsePostgreSQLRepositories();
-builder.Services.UseS3Repositories(configuration);
+builder.Services.UseS3Repositories();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new ProducesAttribute("application/json"));
@@ -38,9 +84,12 @@ builder.Services.AddDbContext<CitydbV4DbContext>(options =>
     builder.Username = databaseSettings.Username;
     builder.Password = databaseSettings.Password;
     builder.Database = databaseSettings.Database;
-    options.UseNpgsql(builder.ConnectionString);
+    options.UseNpgsql(builder.ConnectionString, o => o.UseNetTopologySuite());
     options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-    //options.EnableSensitiveDataLogging();
+    if (!isDevelopment)
+    {
+        //options.EnableSensitiveDataLogging();
+    }
 });
 builder.Services.AddSingleton(s3Settings);
 
@@ -64,7 +113,7 @@ builder.Logging.AddSimpleConsole(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (isDevelopment)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -75,5 +124,6 @@ app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
