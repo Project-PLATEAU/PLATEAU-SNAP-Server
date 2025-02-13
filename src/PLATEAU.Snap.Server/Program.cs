@@ -66,26 +66,6 @@ else
 }
 Console.WriteLine($"GridInfo: {grid.GridInfo}");
 
-// Geoid
-Grid grid;
-if (!isDevelopment)
-{
-    configuration.GetValue<string>("Geoid:Path");
-    using var response = await new AmazonS3Client().GetObjectAsync(new GetObjectRequest { BucketName = s3Settings.Bucket, Key = "gsigeo2011_ver2_2.asc" });
-    using var geoidoReader = new GeoidReader(response.ResponseStream);
-    grid = geoidoReader.Read();
-}
-else
-{
-#pragma warning disable CS8604
-    // Development:  read gsigeo2011_ver2_2 in the same path as the executable.
-    var path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "gsigeo2011_ver2_2.asc");
-#pragma warning restore CS8604
-    using var geoidoReader = new GeoidReader(path);
-    grid = geoidoReader.Read();
-}
-Console.WriteLine($"GridInfo: {grid.GridInfo}");
-
 // Add services to the container.
 builder.Services.AddHealthChecks();
 builder.Services.AddSingleton(grid);
