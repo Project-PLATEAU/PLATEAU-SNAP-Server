@@ -10,4 +10,10 @@ public static class Constants
         public const string NotFound = "リソースが見つかりません。";
         public const string InternalServerError = "サーバー内部でエラーが発生しました。";
     }
+
+    public static class ApiAuthentication
+    {
+        public const string AuthenticationScheme = "ApiKey";
+        public const string ApiKeyHeader = "X-API-KEY";
+    }
 }

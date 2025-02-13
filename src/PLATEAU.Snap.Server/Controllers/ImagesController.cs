@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PLATEAU.Snap.Models.Client;
 using PLATEAU.Snap.Server.Extensions.Mvc;
 using PLATEAU.Snap.Server.Services;
@@ -9,16 +10,17 @@ namespace PLATEAU.Snap.Server.Controllers;
 
 [Route("api")]
 [ApiController]
+[Authorize]
 public class ImagesController : ControllerBase
 {
-    private readonly ILogger<ImagesController> _logger;
+    private readonly ILogger<ImagesController> logger;
 
-    private readonly IImageService _service;
+    private readonly IImageService service;
 
     public ImagesController(ILogger<ImagesController> logger, IImageService service)
     {
-        _logger = logger;
-        _service = service;
+        this.logger = logger;
+        this.service = service;
     }
 
     [HttpPost]
@@ -37,7 +39,7 @@ public class ImagesController : ControllerBase
     {
         try
         {
-            return Ok(await _service.CreateBuildingImageAsync(payload.ToServerParam()));
+            return Ok(await service.CreateBuildingImageAsync(payload.ToServerParam()));
         }
         catch (Exception ex)
         {

@@ -87,6 +87,9 @@ psql -c "\copy city_boundary from city_boundary.csv delimiter ',' csv;" -h local
   },
   "S3": {
     "Bucket": "plateausnap-dev"
+  },
+  "App": {
+    "ApiKey": "123"
   }
 }
 ```

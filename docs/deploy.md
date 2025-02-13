@@ -20,6 +20,24 @@ EC2 の部分は ECS にしたほうがより良いが、今回は EC2 でと指
 terraform init
 ```
 
+※一度デプロイされているなどで以下のようなメッセージが表示た場合、`-reconfigure` オプションを付けて実行する。
+
+```
+Error: Backend initialization required: please run "terraform init"
+│
+│ Reason: Backend configuration block has changed
+│
+│ The "backend" is the interface that Terraform uses to store state,
+│ perform operations, etc. If this message is showing up, it means that the
+│ Terraform configuration you're using is using a custom configuration for
+│ the Terraform backend.
+│
+│ Changes to backend configurations require reinitialization. This allows
+│ Terraform to set up the new configuration, copy existing state, etc. Please run
+│ "terraform init" with either the "-reconfigure" or "-migrate-state" flags to
+│ use the current configuration.
+```
+
 ### Terraform の実行
 
 terraform.tf で変数を設定して terraform でデプロイする。  

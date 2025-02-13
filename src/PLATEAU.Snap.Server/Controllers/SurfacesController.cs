@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PLATEAU.Snap.Models.Client;
 using PLATEAU.Snap.Server.Extensions.Mvc;
 using PLATEAU.Snap.Server.Services;
@@ -9,16 +10,17 @@ namespace PLATEAU.Snap.Server.Controllers;
 
 [Route("api")]
 [ApiController]
+[Authorize]
 public class SurfacesController : ControllerBase
 {
-    private readonly ILogger<SurfacesController> _logger;
+    private readonly ILogger<SurfacesController> logger;
 
-    private readonly ISurfaceGeometryService _service;
+    private readonly ISurfaceGeometryService service;
 
     public SurfacesController(ILogger<SurfacesController> logger, ISurfaceGeometryService service)
     {
-        _logger = logger;
-        _service = service;
+        this.logger = logger;
+        this.service = service;
     }
 
     [HttpPost]
@@ -37,7 +39,7 @@ public class SurfacesController : ControllerBase
     {
         try
         {
-            return Ok(await _service.GetVisibleSurfacesAsync(payload.ToServerParam()));
+            return Ok(await service.GetVisibleSurfacesAsync(payload.ToServerParam()));
         }
         catch (Exception ex)
         {
