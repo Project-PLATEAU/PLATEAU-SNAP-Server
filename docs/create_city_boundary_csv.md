@@ -29,7 +29,7 @@ cd scripts/
 ./run.sh
 ```
 
-## merge_city_boundary.gpkg のインポート
+### merge_city_boundary.gpkg のインポート
 
 merge_city_boundary.gpkg を PostgreSQL にインポートします。  
 事前に以下の環境を構築しておきます。
@@ -55,3 +55,8 @@ psql -h <host> -p <port> -U <user> -d <dbname>
 ```
 \copy merge_city_boundary (fid, gst_css_name, system_number, area_code, pref_name, city_name, gst_name, css_name, area, x_code, y_code, geom) TO '<output_path>/city_boundary.csv' DELIMITER ',' CSV ENCODING 'UTF8' QUOTE '"' ESCAPE '''';
 ```
+
+### 圧縮
+
+リポジトリに登録する際に Git LFS を使わなくていいように圧縮します。  
+zip では 100MB を超えたため、7z を使用しています。

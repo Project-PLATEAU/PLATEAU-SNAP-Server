@@ -202,7 +202,9 @@ psql -f init.sql -h <host> -p <port> -U citydb_user -d citydb_v4
 
 #### 境界データインポート
 
-事前に [境界データ作成](./create_city_boundary_csv.md) を行い、city_boundary.csv を作成しておく必要があります。
+事前に [境界データ作成](./create_city_boundary_csv.md) を行い、city_boundary.csv を作成しておく必要があります。  
+更新が不要な場合、[city_boundary.7z](../data/city_boundary.7z) を解凍して使用してください。  
+※座標系がかわるなどの理由がない限りは更新不要です。
 
 ```bash
 psql -c "\copy citydb.city_boundary from city_boundary.csv delimiter ',' csv;" -h <host> -p <port> -U citydb_user -d citydb_v4
