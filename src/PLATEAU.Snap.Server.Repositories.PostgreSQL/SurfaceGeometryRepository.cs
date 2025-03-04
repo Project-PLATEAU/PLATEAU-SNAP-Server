@@ -26,6 +26,7 @@ internal class SurfaceGeometryRepository : BaseRepository, ISurfaceGeometryRepos
             await connection.OpenAsync();
         }
 
+        // 事前に surface_centroid に lod1 の surface のみ登録しているため、このクエリで lod1 の面を取得できる
         using var command = connection.CreateCommand();
         command.CommandText = @"
             WITH t1 AS (

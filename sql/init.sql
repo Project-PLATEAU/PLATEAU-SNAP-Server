@@ -45,8 +45,12 @@ CREATE TABLE IF NOT EXISTS citydb.surface_centroid
     center geometry(Geometry,4326)
 );
 
+WITH t AS (
+    SELECT sg.* FROM citydb.building AS b
+    JOIN surface_geometry AS sg ON b.lod1_solid_id=sg.root_id
+    WHERE parent_id IS NOT NULL AND is_composite = 0
+)
 INSERT INTO surface_centroid
-SELECT id, gmlid, ST_Centroid(ST_Transform(ST_FlipCoordinates(ST_Force2D(geometry)), 4326)) as center FROM citydb.surface_geometry
-WHERE geometry IS NOT NULL;
+SELECT id, gmlid, ST_Centroid(ST_Transform(ST_FlipCoordinates(ST_Force2D(geometry)), 4326)) as center FROM t;
 
 CREATE INDEX IF NOT EXISTS surface_centroid_center_geom_idx ON citydb.surface_centroid USING gist (center);
