@@ -2,8 +2,8 @@
 
 ## アーキテクチャ
 
-アーキテクチャは以下の通り。  
-EC2 の部分は ECS にしたほうがより良いが、今回は EC2 でと指定があったためそのようにしている。
+アーキテクチャは以下の通りです。  
+EC2 の部分は ECS にしたほうがより良いと考えられますが、今回は EC2 でと指定があったためそのようにしています。
 
 ![アーキテクチャ図](./images/architectur.drawio.svg)
 
@@ -20,7 +20,7 @@ EC2 の部分は ECS にしたほうがより良いが、今回は EC2 でと指
 terraform init
 ```
 
-※一度デプロイされているなどで以下のようなメッセージが表示た場合、`-reconfigure` オプションを付けて実行する。
+※一度デプロイされているなどで以下のようなメッセージが表示た場合、`-reconfigure` オプションを付けて実行します。
 
 ```
 Error: Backend initialization required: please run "terraform init"
@@ -40,17 +40,17 @@ Error: Backend initialization required: please run "terraform init"
 
 ### Terraform の実行
 
-terraform.tf で変数を設定して terraform でデプロイする。  
-アーキテクチャ図のところまではデプロイされる。
+terraform.tf で変数を設定して terraform でデプロイします。  
+アーキテクチャ図のところまではデプロイされます。
 
 ```bash
 terraform plan
 terraform apply
 ```
 
-EC2 のユーザデータによってある程度はセットアップも行われる。  
-ユーザデータによるセットアップの内容は以下の通り。  
-※詳細は [init.sh](./script/init.sh) を参照
+EC2 のユーザデータによってある程度はセットアップも行われます。  
+ユーザデータによるセットアップの内容は以下の通りです。  
+※詳細は [init.sh](./script/init.sh) を参照してください。
 
 - タイムゾーンの設定
 - ロケールの設定
@@ -69,13 +69,13 @@ EC2 のユーザデータによってある程度はセットアップも行わ�
 
 ## EC2 での作業
 
-EC2 に SSH で接続して作業する。  
-以降の手順で `<>` で囲われている箇所は環境にあわせて適宜設定する。
+EC2 に SSH で接続して作業します。  
+以降の手順で `<>` で囲われている箇所は環境にあわせて適宜設定します。
 
 ### 追加ディスクのマウント
 
-データのサイズが大きいとディスクが足りなくなる。  
-ディスク自体は terraform で作成されているのでマウントする。
+データのサイズが大きいとディスクが足りなくなります。  
+ディスク自体は terraform で作成されているのでマウントします。
 
 #### root ユーザに切り替え
 
@@ -102,7 +102,7 @@ blkid /dev/xvdf
 vi /etc/fstab
 ```
 
-UUID は blkid コマンドで取得したものを指定する。
+UUID は blkid コマンドで取得したものを指定します。
 
 ```
 UUID=76e66f84-855d-4e36-ab81-b2a02f2746b6     /data       ext4   defaults          1   1
@@ -110,7 +110,7 @@ UUID=76e66f84-855d-4e36-ab81-b2a02f2746b6     /data       ext4   defaults       
 
 ### データベース作成
 
-masuter_user でログインする。
+masuter_user でログインします。
 
 ```bash
 psql -h <host> -p <port> -U <user> -d postgres
@@ -125,7 +125,7 @@ CREATE EXTENSION postgis;
 CREATE EXTENSION postgis_raster;
 ```
 
-citydb_user でログインできることを確認。
+citydb_user でログインできることを確認します。
 
 ```bash
 psql -h <host> -p <port> -U citydb_user -d citydb_v4
@@ -155,7 +155,7 @@ chmod 755 CREATE_DB.sh
 ./CREATE_DB.sh
 ```
 
-最初の SRID の指定で 6697 を指定し、それ以外はデフォルトとする。
+最初の SRID の指定で 6697 を指定し、それ以外はデフォルトとします。
 
 #### インポートツールにパスを通す
 
@@ -173,8 +173,8 @@ source ~/.bashrc
 
 #### インポート
 
-拡張ディスク上で作業しないとディスクがたりなくなるため注意。  
-※中央区だけで 10GB だった。
+拡張ディスク上で作業しないとディスクがたりなくなるため注意してください。  
+※中央区だけで 10GB 程度ありました。
 
 ```bash
 cd /data
@@ -182,19 +182,19 @@ wget https://assets.cms.plateau.reearth.io/assets/f4/d27eb2-1312-4406-8acf-54f6c
 unzip 13102_chuo-ku_city_2023_citygml_1_op.zip -d 13102_chuo-ku_city_2023_citygml_1_op
 ```
 
-`impexp import` でインポートする。  
-詳細は [impexp-cli-import-command](https://3dcitydb-docs.readthedocs.io/en/latest/impexp/cli/import.html#impexp-cli-import-command) を参照。
+`impexp import` でインポートします。  
+詳細は [impexp-cli-import-command](https://3dcitydb-docs.readthedocs.io/en/latest/impexp/cli/import.html#impexp-cli-import-command) を参照してください。
 
 ```bash
 impexp import -H <host> -P <port> -d citydb_v4 -u citydb_user -p <password> 53394622_bldg_6697_op.gml
 ```
 
-※EC2 や DB のスペックが低いとかなり時間がかかる。
+※EC2 や DB のスペックが低いとかなり時間がかかります。
 
 #### 追加テーブル作成 & 重心データ作成
 
-事前に SCP などで init.sql と city_boundary.csv をアップロードしておく。  
-※init.sql 実行後に追加で `impexp import` した場合、init.sql を再度実行する必要があることに注意。
+事前に SCP などで init.sql と city_boundary.csv をアップロードしておきます。  
+※init.sql 実行後に追加で `impexp import` した場合、init.sql を再度実行する必要があることに注意してください。
 
 ```bash
 psql -f init.sql -h <host> -p <port> -U citydb_user -d citydb_v4
@@ -214,7 +214,7 @@ psql -c "\copy citydb.city_boundary from city_boundary.csv delimiter ',' csv;" -
 
 #### Secrets Manager に Secret を登録
 
-JSON View で設定する場合は `"<port>"` の部分もダブルクォーテーションで囲わないといけないため注意。
+JSON View で設定する場合は `"<port>"` の部分もダブルクォーテーションで囲わないといけないため注意してください。
 
 ```json
 {
@@ -229,9 +229,9 @@ JSON View で設定する場合は `"<port>"` の部分もダブルクォーテ�
 
 #### docker-compose.yml の設定
 
-事前に SCP などで docker-compose.yml をアップロードしておく。  
-必要に応じて nginx などを使ってもよいが、将来的に ECS に置き換える場合は不要なので、今回は直接 80 と 443 に直接公開している。  
-※ただし、現状はドメインを取得していないため 443 では接続できない。
+事前に SCP などで docker-compose.yml をアップロードしておきます。  
+必要に応じて nginx などを使ってもよいが、将来的に ECS に置き換える場合は不要なので、今回は直接 80 と 443 に直接公開しています。  
+※ただし、現状はドメインを取得していないため 443 では接続できません。
 
 ```bash
 vi docker-compose.yml
