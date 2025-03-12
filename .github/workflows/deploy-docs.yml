@@ -1,3 +1,5 @@
+name: Publish GitHub Pages
+
 on:
   push:
     branches:
@@ -28,10 +30,8 @@ jobs:
           dotnet-version: 8.x
       - run: dotnet tool update -g docfx
       - run: docfx docs/docfx.json
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish Documentation on GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: '.docs/_site'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_site

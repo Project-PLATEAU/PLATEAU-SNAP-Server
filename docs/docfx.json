@@ -30,6 +30,6 @@
                 ]
             }
         ],
-        "dest": "../.docs/_site"
+        "dest": "../docs/_site"
     }
 }
