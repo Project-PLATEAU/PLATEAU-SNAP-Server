@@ -1,0 +1,10 @@
+- name: PLATEAU-SNAP-Server
+  href: ../index.md
+- name: 利用を開始する
+  items:
+  - name: ビルド手順書
+    href: buildMan.md
+  - name: デプロイ手順書
+    href: deployMan.md
+  - name: 境界データ作成手順書
+    href: cityBoundaryMan.md

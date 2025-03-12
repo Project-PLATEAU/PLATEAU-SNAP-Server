@@ -1,4 +1,4 @@
-# 境界データ作成手順
+# 境界データ作成手順書
 
 境界データの作成では、[MIERUNE/create_gpkg_for_city_boundaries](https://github.com/MIERUNE/create_gpkg_for_city_boundaries) のプログラムを使用しています。
 

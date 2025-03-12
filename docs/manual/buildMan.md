@@ -1,4 +1,4 @@
-# ビルド手順
+# ビルド手順書
 
 ## 事前準備
 
@@ -6,7 +6,7 @@
 
 [CityGML-validation-function](https://github.com/Project-PLATEAU/CityGML-validation-function) の手順に従い、3D City Database を構築します。
 
-[docker-compose.local.yml](./src/docker-compose.local.yml) の DB を使用する場合、`plateau.snap.server` を一時的にコメントアウトして起動して DB を構築します。
+docker-compose.local.yml の DB を使用する場合、`plateau.snap.server` を一時的にコメントアウトして起動して DB を構築します。
 
 ```yml
 services:
@@ -37,7 +37,7 @@ psql -f init.sql -h localhost -p 25432 -U postgres -d citydb_v4
 
 ### SRID 特定用データのインポート
 
-[city_boundary.7z](../data/city_boundary.7z)を解凍して city_boundary.csv を取得します。  
+data/city_boundary.7z を解凍して city_boundary.csv を取得します。  
 city_boundary テーブルに city_boundary.csv をインポートします。以下はコマンドラインで実行する例です。
 
 ```
