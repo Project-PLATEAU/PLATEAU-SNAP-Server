@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+  <head>
+    <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>デプロイ手順書 | PLATEAU SNAP Server </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="デプロイ手順書 | PLATEAU SNAP Server ">
+    
+    
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../styles/docfx.vendor.min.css">
+      <link rel="stylesheet" href="../styles/docfx.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first=First data-prev=Previous data-next=Next data-last=Last></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="デプロイ手順書">デプロイ手順書</h1>
+
+<h2 id="アーキテクチャ">アーキテクチャ</h2>
+<p>アーキテクチャは以下の通りです。<br>
+EC2 の部分は ECS にしたほうがより良いと考えられますが、今回は EC2 でと指定があったためそのようにしています。</p>
+<p><img src="../resources/architectur.drawio.svg" alt="アーキテクチャ図"></p>
+<h2 id="デプロイ-terraform">デプロイ (Terraform)</h2>
+<h3 id="terraform-の設定">Terraform の設定</h3>
+<p>terraform/environments/dev/terraform.tf と terraform/environments/dev/provider.tf を編集して設定をします。<br>
+terraform/environments/dev/provider.tf で指定する backend の s3 は事前に作成し、適切なアクセス許可をしておく必要があります。</p>
+<h3 id="terraform-の初期化">Terraform の初期化</h3>
+<pre><code class="lang-bash">terraform init
+</code></pre>
+<p>※一度デプロイされているなどで以下のようなメッセージが表示た場合、<code>-reconfigure</code> オプションを付けて実行します。</p>
+<pre><code>Error: Backend initialization required: please run &quot;terraform init&quot;
+│
+│ Reason: Backend configuration block has changed
+│
+│ The &quot;backend&quot; is the interface that Terraform uses to store state,
+│ perform operations, etc. If this message is showing up, it means that the
+│ Terraform configuration you're using is using a custom configuration for
+│ the Terraform backend.
+│
+│ Changes to backend configurations require reinitialization. This allows
+│ Terraform to set up the new configuration, copy existing state, etc. Please run
+│ &quot;terraform init&quot; with either the &quot;-reconfigure&quot; or &quot;-migrate-state&quot; flags to
+│ use the current configuration.
+</code></pre>
+<h3 id="terraform-の実行">Terraform の実行</h3>
+<p>terraform.tf で変数を設定して terraform でデプロイします。<br>
+アーキテクチャ図のところまではデプロイされます。</p>
+<pre><code class="lang-bash">terraform plan
+terraform apply
+</code></pre>
+<p>EC2 のユーザデータによってある程度はセットアップも行われます。<br>
+ユーザデータによるセットアップの内容は以下の通りです。<br>
+※詳細は terraform/script/init.sh を参照してください。</p>
+<ul>
+<li>タイムゾーンの設定</li>
+<li>ロケールの設定</li>
+<li>キーボードレイアウトの設定</li>
+<li>dnf の更新</li>
+<li>PostgreSQL のインストール</li>
+<li>docker のインストール</li>
+<li>root じゃなくても docker を起動できるようにする</li>
+<li>docker サービスの起動、自動起動設定</li>
+<li>docker-compose のインストール</li>
+<li>Java のインストール</li>
+<li>3DCityDB-Importer-Exporter のインストール</li>
+<li>ADE プラグインのインストール</li>
+<li>i-UR 1.4 拡張モジュールのインストール</li>
+<li>3D City Database のセットアップツールのインストール</li>
+</ul>
+<h2 id="ec2-での作業">EC2 での作業</h2>
+<p>EC2 に SSH で接続して作業します。<br>
+以降の手順で <code>&lt;&gt;</code> で囲われている箇所は環境にあわせて適宜設定します。</p>
+<h3 id="追加ディスクのマウント">追加ディスクのマウント</h3>
+<p>データのサイズが大きいとディスクが足りなくなります。<br>
+ディスク自体は terraform で作成されているのでマウントします。</p>
+<h4 id="root-ユーザに切り替え">root ユーザに切り替え</h4>
+<pre><code class="lang-bash">sudo su -
+</code></pre>
+<h4 id="フォーマットして-data-にマウント">フォーマットして /data にマウント</h4>
+<pre><code class="lang-bash">file -s /dev/sdf
+mkfs -t ext4 /dev/xvdf
+mkdir /data
+chmod 777 /data
+mount /dev/xvdf /data
+</code></pre>
+<h4 id="再起動時の自動マウント設定">再起動時の自動マウント設定</h4>
+<p>UUID を確認。</p>
+<pre><code class="lang-bash">blkid /dev/xvdf
+vi /etc/fstab
+</code></pre>
+<p>UUID は blkid コマンドで取得したものを指定します。</p>
+<pre><code>UUID=76e66f84-855d-4e36-ab81-b2a02f2746b6     /data       ext4   defaults          1   1
+</code></pre>
+<h3 id="データベース作成">データベース作成</h3>
+<p>masuter_user でログインします。</p>
+<pre><code class="lang-bash">psql -h &lt;host&gt; -p &lt;port&gt; -U &lt;user&gt; -d postgres
+</code></pre>
+<pre><code class="lang-sql">CREATE USER citydb_user WITH LOGIN PASSWORD '&lt;password&gt;';
+CREATE DATABASE citydb_v4 WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'ja_JP.UTF8' OWNER citydb_user;
+\c citydb_v4
+CREATE EXTENSION postgis;
+--CREATE EXTENSION postgis_sfcgal; RDSでは未対応だった
+CREATE EXTENSION postgis_raster;
+</code></pre>
+<p>citydb_user でログインできることを確認します。</p>
+<pre><code class="lang-bash">psql -h &lt;host&gt; -p &lt;port&gt; -U citydb_user -d citydb_v4
+</code></pre>
+<h3 id="3dcitydb-の構築">3DCityDB の構築</h3>
+<h4 id="接続先を設定">接続先を設定</h4>
+<pre><code class="lang-bash">cd ~/3DCityDB-Importer-Exporter/3dcitydb/postgresql/ShellScripts/Unix
+vi CONNECTION_DETAILS.sh
+</code></pre>
+<pre><code>export PGBIN=/usr/bin/psql
+export PGHOST=&lt;host&gt;
+export PGPORT=&lt;port&gt;
+export CITYDB=citydb_v4
+export PGUSER=citydb_user
+</code></pre>
+<h4 id="シェル実行">シェル実行</h4>
+<pre><code class="lang-bash">chmod 755 CREATE_DB.sh
+./CREATE_DB.sh
+</code></pre>
+<p>最初の SRID の指定で 6697 を指定し、それ以外はデフォルトとします。</p>
+<h4 id="インポートツールにパスを通す">インポートツールにパスを通す</h4>
+<pre><code class="lang-bash">vi ~/.bashrc
+</code></pre>
+<pre><code>export PATH=~/3DCityDB-Importer-Exporter/bin:$PATH
+</code></pre>
+<pre><code class="lang-bash">source ~/.bashrc
+</code></pre>
+<h4 id="インポート">インポート</h4>
+<p>拡張ディスク上で作業しないとディスクがたりなくなるため注意してください。<br>
+※中央区だけで 10GB 程度ありました。</p>
+<pre><code class="lang-bash">cd /data
+wget https://assets.cms.plateau.reearth.io/assets/f4/d27eb2-1312-4406-8acf-54f6c5384ae6/13102_chuo-ku_city_2023_citygml_1_op.zip
+unzip 13102_chuo-ku_city_2023_citygml_1_op.zip -d 13102_chuo-ku_city_2023_citygml_1_op
+</code></pre>
+<p><code>impexp import</code> でインポートします。<br>
+詳細は <a href="https://3dcitydb-docs.readthedocs.io/en/latest/impexp/cli/import.html#impexp-cli-import-command">impexp-cli-import-command</a> を参照してください。</p>
+<pre><code class="lang-bash">impexp import -H &lt;host&gt; -P &lt;port&gt; -d citydb_v4 -u citydb_user -p &lt;password&gt; 53394622_bldg_6697_op.gml
+</code></pre>
+<p>※EC2 や DB のスペックが低いとかなり時間がかかります。</p>
+<h4 id="追加テーブル作成--重心データ作成">追加テーブル作成 &amp; 重心データ作成</h4>
+<p>事前に SCP などで init.sql と city_boundary.csv をアップロードしておきます。<br>
+※init.sql 実行後に追加で <code>impexp import</code> した場合、init.sql を再度実行する必要があることに注意してください。</p>
+<pre><code class="lang-bash">psql -f init.sql -h &lt;host&gt; -p &lt;port&gt; -U citydb_user -d citydb_v4
+</code></pre>
+<h4 id="境界データインポート">境界データインポート</h4>
+<p>事前に <a href="cityBoundaryMan.html">境界データ作成</a> を行い、city_boundary.csv を作成しておく必要があります。<br>
+更新が不要な場合、data/city_boundary.7z を解凍して使用してください。<br>
+※座標系がかわるなどの理由がない限りは更新不要です。</p>
+<pre><code class="lang-bash">psql -c &quot;\copy citydb.city_boundary from city_boundary.csv delimiter ',' csv;&quot; -h &lt;host&gt; -p &lt;port&gt; -U citydb_user -d citydb_v4
+</code></pre>
+<h3 id="アプリの環境設定">アプリの環境設定</h3>
+<h4 id="secrets-manager-に-secret-を登録">Secrets Manager に Secret を登録</h4>
+<p>JSON View で設定する場合は <code>&quot;&lt;port&gt;&quot;</code> の部分もダブルクォーテーションで囲わないといけないため注意してください。</p>
+<pre><code class="lang-json">{
+  &quot;Database:Host&quot;: &quot;&lt;host&gt;&quot;,
+  &quot;Database:Port&quot;: &quot;&lt;port&gt;&quot;,
+  &quot;Database:Database&quot;: &quot;citydb_v4&quot;,
+  &quot;Database:Username&quot;: &quot;citydb_user&quot;,
+  &quot;Database:Password&quot;: &quot;&lt;password&gt;&quot;,
+  &quot;S3:Bucket&quot;: &quot;&lt;bucket&gt;&quot;
+}
+</code></pre>
+<h4 id="docker-composeyml-の設定">docker-compose.yml の設定</h4>
+<p>事前に SCP などで docker-compose.yml をアップロードしておきます。<br>
+必要に応じて nginx などを使ってもよいが、将来的に ECS に置き換える場合は不要なので、今回は直接 80 と 443 に直接公開しています。<br>
+※ただし、現状はドメインを取得していないため 443 では接続できません。</p>
+<pre><code class="lang-bash">vi docker-compose.yml
+</code></pre>
+<pre><code class="lang-yml">services:
+  plateau.snap.server:
+    image: &lt;account_id&gt;.dkr.ecr.&lt;region&gt;.amazonaws.com/&lt;repository&gt;:&lt;tag&gt;
+    ports:
+      - &quot;80:8080&quot;
+      - &quot;443:8081&quot;
+    restart: always
+    environment:
+      - AWS_ACCESS_KEY_ID=&lt;AWS_ACCESS_KEY_ID&gt;
+      - AWS_SECRET_ACCESS_KEY=&lt;AWS_SECRET_ACCESS_KEY&gt;
+      - SECRET_NAME=&lt;SECRET_NAME&gt;
+</code></pre>
+<h2 id="起動">起動</h2>
+<pre><code class="lang-bash">docker-compose up -d --build --no-cache
+</code></pre>
+
+</article>
+          </div>
+
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Synesthesias/PLATEAU-SNAP-Server/blob/main/docs/manual/deployMan.md/#L1" class="contribution-link">Edit this page</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In this article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+      PLATEAU
+      
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="../styles/docfx.vendor.min.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

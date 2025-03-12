@@ -1,0 +1,95 @@
+{
+  "source_base_path": "/home/runner/work/PLATEAU-SNAP-Server/PLATEAU-SNAP-Server/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "manual/buildMan.md",
+      "output": {
+        ".html": {
+          "relative_path": "manual/buildMan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "manual/cityBoundaryMan.md",
+      "output": {
+        ".html": {
+          "relative_path": "manual/cityBoundaryMan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "manual/deployMan.md",
+      "output": {
+        ".html": {
+          "relative_path": "manual/deployMan.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "manual/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "manual/toc.json"
+        },
+        ".html": {
+          "relative_path": "manual/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "resources/architectur.drawio.svg",
+      "output": {
+        "resource": {
+          "relative_path": "resources/architectur.drawio.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "toc.json"
+        },
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
