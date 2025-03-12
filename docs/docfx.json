@@ -1,38 +1,35 @@
 {
-  "metadata": [
-  ],
-  "build": {
-      "globalMetadata": {
-          "_disableContribution": true,
-          "_enableSearch": true,
-          "_appLogoPath": "resources/logo.svg"
-      },
-      "content": [
-          {
-              "files": [
-                  "toc.yml",
-                  "index.md"
-              ],
-              "exclude": [
-                "doc/**"
-              ]
-          },
-          {
-              "src": "manual",
-              "files": [
-                  "toc.yml",
-                  "*.md"
-              ],
-              "dest": "manual"
-          }
-      ],
-      "resource": [
-          {
-              "files": [
-                  "resources/**/*"
-              ]
-          }
-      ],
-      "output": "../"
-  }
+    "metadata": [
+    ],
+    "build": {
+        "globalMetadata": {
+            "_appTitle": "PLATEAU SNAP Server",
+            "_appFooter": "PLATEAU",
+            "_enableSearch": true
+        },
+        "content": [
+            {
+                "files": [
+                    "toc.yml",
+                    "index.md"
+                ]
+            },
+            {
+                "src": "manual",
+                "files": [
+                    "toc.yml",
+                    "*.md"
+                ],
+                "dest": "manual"
+            }
+        ],
+        "resource": [
+            {
+                "files": [
+                    "resources/**/*"
+                ]
+            }
+        ],
+        "dest": "../.docs/_site"
+    }
 }
