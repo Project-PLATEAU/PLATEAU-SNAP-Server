@@ -39,10 +39,12 @@ public class SurfacesController : ControllerBase
     {
         try
         {
+            logger.LogInformation($"{DateTime.Now}: {payload}");
             return Ok(await service.GetVisibleSurfacesAsync(payload.ToServerParam()));
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, $"{DateTime.Now}: Failed to get visible surfaces");
             return this.HandleException(ex);
         }
     }

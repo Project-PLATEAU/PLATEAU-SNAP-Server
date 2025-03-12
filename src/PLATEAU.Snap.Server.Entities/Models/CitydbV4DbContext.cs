@@ -7,6 +7,11 @@ namespace PLATEAU.Snap.Server.Entities;
 
 public partial class CitydbV4DbContext : DbContext
 {
+    static CitydbV4DbContext()
+    {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+    }
+
     public CitydbV4DbContext()
     {
     }

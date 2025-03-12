@@ -35,4 +35,9 @@ public class VisibleSurfacesRequest
             FieldOfView = FieldOfView.HasValue ? FieldOfView.Value : 45
         };
     }
+
+    public override string ToString()
+    {
+        return $"From: {From}, To: {To}, Roll: {Roll}, MaxDistance: {MaxDistance}, FieldOfView: {FieldOfView}";
+    }
 }

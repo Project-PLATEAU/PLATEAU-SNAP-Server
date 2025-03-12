@@ -1,4 +1,5 @@
-﻿using PLATEAU.Snap.Models.Server;
+﻿using PLATEAU.Snap.Models;
+using PLATEAU.Snap.Models.Server;
 using PLATEAU.Snap.Server.Entities.Models;
 using PLATEAU.Snap.Server.Repositories;
 
@@ -26,12 +27,13 @@ internal class ImageService : IImageService
                 Id = entity.Id
             };
         }
-        catch (Exception)
+        catch (SnapServerException ex)
         {
             return new Models.Client.BuildingImageResponse()
             {
                 Status = Models.Client.StatusType.Error,
-                Message = "File upload failed. Please try again."
+                Message = "File upload failed. Please try again.",
+                Exception = ex
             };
         }
     }

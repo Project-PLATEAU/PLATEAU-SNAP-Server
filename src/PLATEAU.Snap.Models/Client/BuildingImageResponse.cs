@@ -7,4 +7,6 @@ public class BuildingImageResponse
     public long? Id { get; set; }
 
     public string? Message { get; set; }
+
+    public SnapServerException? Exception { get; set; }
 }

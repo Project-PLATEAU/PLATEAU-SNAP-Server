@@ -39,10 +39,19 @@ public class ImagesController : ControllerBase
     {
         try
         {
-            return Ok(await service.CreateBuildingImageAsync(payload.ToServerParam()));
+            logger.LogInformation($"{DateTime.Now}: {payload.Metadata}");
+
+            var result = await service.CreateBuildingImageAsync(payload.ToServerParam());
+            if (result.Status == StatusType.Error)
+            {
+                logger.LogWarning(result.Exception, $"{DateTime.Now}: Failed to create building image");
+            }
+
+            return Ok(result);
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, $"{DateTime.Now}: Failed to create building image");
             return this.HandleException(ex);
         }
     }

@@ -27,6 +27,7 @@ public class BuildingImageRequest
             {
                 throw new InvalidCastException("Failed to deserialize metadata");
             }
+            metadata.Timestamp = metadata.Timestamp.ToUniversalTime();
             metadata.Validate();
 
             return new Server.BuildingImageRequest
