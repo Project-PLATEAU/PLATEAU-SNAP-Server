@@ -14,7 +14,7 @@
 
 ## 3. 利用手順
 
-本システムの構築手順については、[操作マニュアル](https://synesthesias.github.io/PLATEAU-SNAP-Server/))を参照してください。
+本システムの構築手順については、[操作マニュアル](https://synesthesias.github.io/PLATEAU-SNAP-Server/)を参照してください。
 
 ## 4. システム概要
 
