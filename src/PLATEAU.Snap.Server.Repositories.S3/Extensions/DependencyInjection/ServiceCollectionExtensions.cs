@@ -1,5 +1,4 @@
-﻿using Amazon.Extensions.NETCore.Setup;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace PLATEAU.Snap.Server.Repositories;

@@ -86,6 +86,8 @@ resource "aws_db_instance" "app_db" {
   manage_master_user_password   = true
   master_user_secret_kms_key_id = aws_kms_key.rds_master_user.key_id
 
+  iam_database_authentication_enabled = true
+
   vpc_security_group_ids = ["${aws_security_group.rds.id}"]
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   publicly_accessible    = false

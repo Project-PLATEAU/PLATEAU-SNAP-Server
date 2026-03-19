@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace PLATEAU.Snap.Server.Entities.Models;
 
@@ -22,6 +23,10 @@ public partial class Image
     public double ToAltitude { get; set; }
 
     public double Roll { get; set; }
+
+    public Polygon Coordinates { get; set; } = null!;
+
+    public byte[] Thumbnail { get; set; } = null!;
 
     public DateTime Timestamp { get; set; }
 

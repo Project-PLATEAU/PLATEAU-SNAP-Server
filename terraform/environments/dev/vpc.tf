@@ -31,6 +31,15 @@ resource "aws_subnet" "public_1a" {
   }
 }
 
+resource "aws_subnet" "public_1c" {
+  vpc_id            = aws_vpc.default.id
+  cidr_block        = "${local.cidr_prefix}.2.0/24"
+  availability_zone = "ap-northeast-1c"
+  tags = {
+    Name = "${local.app_name}-public-1c"
+  }
+}
+
 # ---------------------------------------------
 # Private Subnet
 # ---------------------------------------------
@@ -121,4 +130,29 @@ resource "aws_route_table" "private_1a" {
 resource "aws_route_table_association" "private_1a" {
   route_table_id = aws_route_table.private_1a.id
   subnet_id      = aws_subnet.private_1a.id
+}
+
+resource "aws_route_table_association" "public_1c_to_ig" {
+  subnet_id      = aws_subnet.public_1c.id
+  route_table_id = aws_route_table.public.id
+}
+
+# ---------------------------------------------
+# Private Subnet Route Table for 1c
+# ---------------------------------------------
+
+resource "aws_route_table" "private_1c" {
+  vpc_id = aws_vpc.default.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_1a.id
+  }
+  tags = {
+    Name = "${local.app_name}-private-1c-rt"
+  }
+}
+
+resource "aws_route_table_association" "private_1c" {
+  route_table_id = aws_route_table.private_1c.id
+  subnet_id      = aws_subnet.private_1c.id
 }

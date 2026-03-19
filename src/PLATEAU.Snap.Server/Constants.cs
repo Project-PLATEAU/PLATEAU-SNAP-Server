@@ -1,10 +1,13 @@
 ﻿namespace PLATEAU.Snap.Server;
 
-public static class Constants
+internal static class Constants
 {
+    public const string ApiRoute = "api";
+
     public static class SwaggerResponseDescriptions
     {
         public const string Ok = "リクエストが成功しました。";
+        public const string Accepted = "リクエストが受理されました。";
         public const string BadRequest = "リクエストが不正です。";
         public const string Unauthorized = "認証に失敗しました。";
         public const string NotFound = "リソースが見つかりません。";

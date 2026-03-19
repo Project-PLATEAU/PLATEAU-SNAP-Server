@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "~> 6.17"
     }
     random = {
       source  = "hashicorp/random"
@@ -12,19 +12,15 @@ terraform {
     }
   }
   backend "s3" {
-    access_key = "<Terraform Backend Access Key>"
-    secret_key = "<Terraform Backend Secret Access Key>"
-    token = "<Terraform Backend Session Token>"
-    region  = "<Terraform Backend Region>"
-    bucket  = "<Terraform Backend Bucket>"
-    key     = "<Terraform Backend Path To the State File>"
+    region  = "ap-northeast-1"
+    bucket  = "plateausnap-terraform"
+    key     = "dev/terraform.tfstate"
     encrypt = true
+    # profile = "<AWS CLI profile name>"
   }
 }
 
 provider "aws" {
-  region     = local.aws.region
-  access_key = local.aws.aws_access_key_id
-  secret_key = local.aws.aws_secret_access_key
-  token      = local.aws.aws_session_token
+  region  = local.aws.region
+  # profile = "<AWS CLI profile name>"
 }

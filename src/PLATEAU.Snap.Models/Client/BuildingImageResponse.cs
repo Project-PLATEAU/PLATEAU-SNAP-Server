@@ -1,4 +1,6 @@
-﻿namespace PLATEAU.Snap.Models.Client;
+﻿using PLATEAU.Snap.Models.Exceptions;
+
+namespace PLATEAU.Snap.Models.Client;
 
 public class BuildingImageResponse
 {

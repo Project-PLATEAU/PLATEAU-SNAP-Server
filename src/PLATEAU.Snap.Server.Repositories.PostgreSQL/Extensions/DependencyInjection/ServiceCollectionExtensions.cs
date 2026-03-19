@@ -9,6 +9,14 @@ public static class ServiceCollectionExtensions
         return services
             .AddScoped<ISurfaceGeometryRepository, SurfaceGeometryRepository>()
             .AddScoped<IImageRepository, ImageRepository>()
+            .AddScoped<IJobRepository, JobRepository>()
             .AddScoped<ICityBoundaryRepository, CityBoundaryRepository>();
+    }
+
+    public static IServiceCollection UsePostgreSQLRepositoriesForLambda(this IServiceCollection services)
+    {
+        return services
+            .AddScoped<IJobRepository, JobRepository>()
+            .AddScoped<ISurfaceGeometryRepository, SurfaceGeometryRepository>();
     }
 }

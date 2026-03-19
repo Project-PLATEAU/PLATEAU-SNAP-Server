@@ -23,7 +23,7 @@ internal class CityBoundaryRepository : BaseRepository, ICityBoundaryRepository
         command.CommandText = @"
             SELECT system_number FROM city_boundary
             WHERE ST_Within(ST_SetSrid(ST_GeomFromText(@point), 4326), geom)";
-        command.Parameters.Add(command.CreateParameter("@point", coordinate.ToWkt2D()));
+        command.Parameters.Add(command.CreateParameter("point", coordinate.ToWkt2D()));
 
         var number = Convert.ToInt32(await command.ExecuteScalarAsync());
         if (number < 0 || number > 19)

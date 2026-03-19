@@ -1,12 +1,16 @@
 ﻿using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using PLATEAU.Snap.Models.Server;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace PLATEAU.Snap.Server.Repositories;
 
 internal class StorageRepository : IStorageRepository
 {
+    private static readonly Regex pattern = new Regex(@"^s3://(?<bucket>[^/]+)/(?<key>.+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     private readonly IAmazonS3 amazonS3;
 
     private readonly S3Settings s3Settings;
@@ -50,5 +54,45 @@ internal class StorageRepository : IStorageRepository
                     return new StorageUploadResponse(HttpStatusCode.InternalServerError);
             }
         }
+    }
+
+    public async Task<byte[]> DownloadAsync(string path)
+    {
+        var match = pattern.Match(path);
+        if (!match.Success)
+        {
+            throw new ArgumentException($"Invalid S3 path format: {path}", nameof(path));
+        }
+
+        var request = new GetObjectRequest
+        {
+            BucketName = match.Groups["bucket"].Value,
+            Key = match.Groups["key"].Value
+        };
+
+        using var response = await amazonS3.GetObjectAsync(request);
+        var memoryStream = new MemoryStream();
+        await response.ResponseStream.CopyToAsync(memoryStream);
+
+        return memoryStream.ToArray();
+    }
+
+    public async Task<string> GeneratePreSignedURLAsync(string path, int expiryInMinutes)
+    {
+        var match = pattern.Match(path);
+        if (!match.Success)
+        {
+            throw new ArgumentException($"Invalid S3 path format: {path}", nameof(path));
+        }
+
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = match.Groups["bucket"].Value,
+            Key = match.Groups["key"].Value,
+            Expires = DateTime.UtcNow.AddMinutes(expiryInMinutes),
+            Verb = HttpVerb.GET
+        };
+
+        return await amazonS3.GetPreSignedURLAsync(request);
     }
 }

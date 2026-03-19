@@ -8,7 +8,7 @@ public partial class Image
     {
     }
 
-    public Image(BuildingImageMetadata metadata)
+    public Image(BuildingImageMetadata metadata, byte[] thumbnail)
     {
         FromLatitude = metadata.From.Latitude;
         FromLongitude = metadata.From.Longitude;
@@ -17,6 +17,8 @@ public partial class Image
         ToLongitude = metadata.To.Longitude;
         ToAltitude = metadata.To.Altitude;
         Roll = metadata.Roll;
+        Coordinates = metadata.Polygon;
+        Thumbnail = thumbnail;
         Timestamp = metadata.Timestamp;
         ImageSurfaceRelations.Add(new ImageSurfaceRelation { Gmlid = metadata.Gmlid });
     }

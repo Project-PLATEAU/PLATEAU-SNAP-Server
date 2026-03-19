@@ -15,6 +15,9 @@ Accept: application/json
     "latitude": 35.64927830412524,
     "altitude": 5
   },
+  "exterior": [
+    [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0]
+  ],
   "timestamp": "2025-01-18T21:27:32.2667573+09:00"
 }
 

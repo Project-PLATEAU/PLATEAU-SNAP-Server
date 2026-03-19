@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using PLATEAU.Snap.Models.Settings;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 

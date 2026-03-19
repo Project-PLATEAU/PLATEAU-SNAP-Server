@@ -1,18 +1,17 @@
 locals {
   aws = {
-    region                = "<AWS Region>"
-    aws_access_key_id     = "<AWS Access Key>"
-    aws_secret_access_key = "<AWS Secret Access Key>"
-    aws_session_token     = "<AWS Session Token>"
+    region  = "ap-northeast-1"
+    # profile = "<AWS CLI profile name>"
   }
 
   app_name_prefix = "plateausnap"
-  stage           = "<Stage>"
-  cidr_prefix     = "<CIDR Prefix e.g. 10.0>"
+  stage           = "dev"
+  cidr_prefix     = "10.0"
+  domain          = "<Your domain name (e.g. example.com)>"
 
   iam = {
-    group_name = "<IAM Group of user executing the application>"
-    user_name  = "<IAM User of executing the application>"
+    group_name = "snap-dev-group"
+    user_name  = "snap-dev-user"
   }
 
   ec2 = {
@@ -23,7 +22,7 @@ locals {
   }
 
   rds = {
-    engine_version    = "16.6"
+    engine_version    = "16.8"
     instance_class    = "db.t3.large"
     storage_type      = "gp2"
     allocated_storage = 20
