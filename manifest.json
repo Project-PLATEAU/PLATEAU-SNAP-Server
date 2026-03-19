@@ -54,11 +54,11 @@
       "type": "Toc",
       "source_relative_path": "manual/toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "manual/toc.json"
-        },
         ".html": {
           "relative_path": "manual/toc.html"
+        },
+        ".json": {
+          "relative_path": "manual/toc.json"
         }
       },
       "version": ""
@@ -74,14 +74,24 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "resources/https.tf",
+      "output": {
+        "resource": {
+          "relative_path": "resources/https.tf"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
-        ".json": {
-          "relative_path": "toc.json"
-        },
         ".html": {
           "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
         }
       },
       "version": ""
